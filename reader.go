@@ -218,6 +218,9 @@ func (a *reader) init(rd io.Reader, buffers, size int) {
 			case b := <-a.reuse:
 				err := b.read(a.in)
 				a.ready <- b
+				if err == io.EOF {
+					continue
+				}
 				if err != nil {
 					return
 				}
